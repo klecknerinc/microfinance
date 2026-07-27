@@ -1,0 +1,13 @@
+[projects.'c:\users\hp']
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 4
+
+[mcp_servers.insforge]
+command = "npx"
+args = ["-y", "@insforge/mcp@latest"]
+
+[mcp_servers.insforge.env]
+API_BASE_URL = "https://6q2j328p.us-east.insforge.app"
+API_KEY = "ik_3ac97379a12ae3090119300e460cd1a4"
