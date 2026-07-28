@@ -1,39 +1,50 @@
-strategy:
-  fail-fast: false
-  matrix:
-    node-version: [18.x, 20.x]
+name: Node.js CI
 
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
-    with:
-      fetch-depth: 0
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
 
-  - name: Use Node.js ${{ matrix.node-version }}
-    uses: actions/setup-node@v4
-    with:
-      node-version: ${{ matrix.node-version }}
-      cache: 'npm'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x, 20.x]
 
-  - name: Install dependencies
-    run: npm ci --prefer-offline --no-audit --no-fund
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  - name: Lint (if present)
-    run: npm run lint --if-present
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-  - name: Test (if present)
-    run: npm test --if-present
-    env:
-      CI: true
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
 
-  - name: Build (if present)
-    run: npm run build --if-present
+      - name: Lint (if present)
+        run: npm run lint --if-present
 
-  - name: Upload build artifact
-    uses: actions/upload-artifact@v4
-    with:
-      name: build
-      path: |
-        build
-        dist
-        out
+      - name: Test (if present)
+        run: npm test --if-present
+        env:
+          CI: true
+
+      - name: Build (if present)
+        run: npm run build --if-present
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            build
+            dist
+            out
