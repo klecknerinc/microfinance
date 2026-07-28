@@ -32,7 +32,7 @@ jobs:
       - name: Lint (if present)
         run: npm run lint --if-present
 
-      - name: Test (if present)
+      - name: github(if present)
         run: npm test --if-present
         env:
           CI: true
